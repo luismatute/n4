@@ -14,10 +14,6 @@ var settings 	= require('./config/express'),
 
 // App settings
 	app = settings()
-	app.locals.util = utilities
-
-// Routes
-	utilities.systems_registrar(app)
 
 // Fire up the Server
 	app.listen(app.locals.port, function () {

@@ -13,5 +13,8 @@
     },
     "author": "Adolfo Gutierrez, Luis Matute, Josue Rodriguez",
     "license": "ISC",
-    "dependencies": {}
+    "dependencies": {
+        "express": "3.4.8",
+        "jade": "*"
+    }
 }

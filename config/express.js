@@ -12,6 +12,7 @@ setup = function() {
 
 	// All Envs
 	app
+		.set('views', path.join(app.locals.root_path, 'views'))
 		.set('view engine', 'jade')
 		.set('env', env)
 		.use(express.favicon())
@@ -25,6 +26,10 @@ setup = function() {
 	if (env !== 'development') {
   		app.use(express.errorHandler())  // This will show us a detailed error in development
 	}
+
+	app.get('/', function(req,res) {
+		res.render('index');
+	})
 
 	// assume 404 since no middleware responded
 	app.use(function(req, res, next){
