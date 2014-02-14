@@ -1,0 +1,17 @@
+{
+    "name": "fnode",
+    "version": "0.0.0",
+    "description": "This is a playground for nodejs",
+    "main": "index.js",
+    "scripts": {
+        "start": "node server.js",
+        "grunt": "grunt watch"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:luismatute/roninjs.git"
+    },
+    "author": "Adolfo Gutierrez, Luis Matute, Josue Rodriguez",
+    "license": "ISC",
+    "dependencies": {}
+}
