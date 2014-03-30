@@ -1,7 +1,12 @@
 doctype html
 html
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    block content
+	head
+		title= title
+		link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/foundation/5.2.1/css/foundation.min.css')
+		link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css')
+	body
+		nav.top-bar
+			ul.title-area
+				li.name
+					h1: a My Site
+		block content

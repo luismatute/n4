@@ -9,8 +9,7 @@
 */
 
 // Module Dependencies and App Instantiation
-var settings 	= require('./config/express'),
-	utilities 	= require('./config/utilities')
+var settings 	= require('./config/express')
 
 // App settings
 	app = settings()

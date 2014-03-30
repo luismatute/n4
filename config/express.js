@@ -1,6 +1,8 @@
 var express 	= require('express'),
 	path 		= require('path'),
 	env 		= process.env.NODE_ENV || 'development',
+	request 	= require('request'),
+	cheerio		= require('cheerio'),
 	// Instantiate Express
 	app 		= express(),
 	setup
@@ -19,7 +21,7 @@ setup = function() {
 		.use(express.logger('dev'))
 		.use(express.json())
 		.use(express.urlencoded())
-		.use(express.methodOverride())
+		.use(express.multipart())
 		.use(app.router)
 
 	// development only
@@ -29,6 +31,22 @@ setup = function() {
 
 	app.get('/', function(req,res) {
 		res.render('index');
+	})
+
+	app.post('/scrapper', function(req,res) {
+		var urls = []
+
+		request(req.body.url, function (err, resp, body) {
+			var $ = cheerio.load(body)
+			if ( !err && resp.statusCode == 200 ) {
+				$('a').each(function (index, element) {
+					var url = this.attr('href')
+					urls.push(url)
+				})
+				console.log(urls);
+			}
+		})
+		res.render('index')
 	})
 
 	// assume 404 since no middleware responded
