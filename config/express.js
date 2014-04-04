@@ -34,20 +34,76 @@ setup = function() {
 	})
 
 	app.post('/scrapper', function(req,res) {
-		var urls = []
+		var urls = [],
+			initial_url = req.body.url
+		function url_proto () {
+			this.url = initial_url;
+			this.path = '/';
+			this.checked = false;
+		}
 
-		request(req.body.url, function (err, resp, body) {
-			var $ = cheerio.load(body)
-			if ( !err && resp.statusCode == 200 ) {
-				$('a').each(function (index, element) {
-					var url = this.attr('href')
-					urls.push(url)
-				})
-				console.log(urls);
-			}
-		})
+		makeRequest(new url_proto(), url_proto, urls)
+		console.log(urls);
+		console.log(urls.length);
 		res.render('index')
 	})
+
+	function makeRequest (url_obj, url_proto, urls) {
+		request(url_obj.url + url_obj.path, function (err, resp, body) {
+			var $ = cheerio.load(body)
+
+			for (var i = 0; i < urls.length; i++) {
+				if ( urls[i].path === url_obj.path )
+					urls[i].checked = true
+					break
+			}
+
+			if ( !err && resp.statusCode == 200 ) {
+				$('a').each(function (index, element) {
+					var tmp_url_obj = new url_proto()
+					if ( addUrl( this.attr('href'), url_proto, urls ) ) {
+						var formatted_url = this.attr('href');
+						formatted_url = (formatted_url.indexOf('/') == 0)? formatted_url: '/'+formatted_url
+						tmp_url_obj.path = formatted_url
+						urls.push(tmp_url_obj)
+					}
+				})
+				for (var i = 0; i < urls.length; i++) {
+					if ( urls[i].checked === false )
+						var new_url_obj = new url_proto()
+						new_url_obj.path = urls[i].path
+						makeRequest(new_url_obj,url_proto,urls)
+						break
+				}
+			}
+		})
+	}
+
+	function addUrl (url, urls) {
+		// function url_proto () {
+		// 	this.url = '/';
+		// 	this.checked = false;
+		// }
+
+		if(
+			typeof url == 'string'
+			&& url != ''
+			&& !/#|tel:|mailto:|http[s]?/i.test(url)
+		) {
+			var exists_in_array = false
+			url = (url.indexOf('/') == 0)? url: '/'+url
+			for (var i = 0; i < urls.length; i++) {
+				if ( urls[i].path === url )
+					exists_in_array = true
+			}
+			if (!exists_in_array) {
+				// urls.push(url_obj)
+				return true
+			} else {
+				return false
+			}
+		}
+	}
 
 	// assume 404 since no middleware responded
 	app.use(function(req, res, next){
