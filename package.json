@@ -1,0 +1,21 @@
+{
+  "name": "n4",
+  "version": "0.0.0",
+  "description": "Traverse a website looking for 404s",
+  "main": "app.js",
+  "preferGlobal": "true",
+  "bin": {
+    "n4": "n4.js"
+  },
+  "scripts": {
+    "start": "node app"
+  },
+  "author": "Luis Matute",
+  "license": "MIT",
+  "dependencies": {
+    "cheerio": "^0.16.0",
+    "minimist": "^0.1.0",
+    "request": "^2.36.0",
+    "url": "^0.10.1"
+  }
+}
